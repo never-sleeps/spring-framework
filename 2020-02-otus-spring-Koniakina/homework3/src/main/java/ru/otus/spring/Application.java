@@ -10,10 +10,12 @@ import ru.otus.spring.service.ApplicationService;
 @SpringBootApplication
 @EnableConfigurationProperties(ApplicationProperties.class)
 public class Application {
-
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
-        ApplicationService serviceBean = context.getBean(ApplicationService.class);
-        serviceBean.start();
+
+        ApplicationService applicationService = context.getBean(ApplicationService.class);
+        applicationService.start();
+
+        context.close();
     }
 }

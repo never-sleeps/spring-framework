@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.Scanner;
 
 @Service
-public class Console{
+public class Console {
 
     public String read() {
         Scanner scanner = new Scanner(System.in);

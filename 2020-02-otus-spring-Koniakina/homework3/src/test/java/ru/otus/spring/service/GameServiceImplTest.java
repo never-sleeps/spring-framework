@@ -2,16 +2,15 @@ package ru.otus.spring.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import ru.otus.spring.service.impl.ApplicationServiceImpl;
+import ru.otus.spring.Application;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GameServiceImplTest {
 
     @Test
     void checkGameForAllAnswersRight(){
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationServiceImpl.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
 
         GameService service = context.getBean(GameService.class);
         service.startGame("Irina");
@@ -26,7 +25,7 @@ class GameServiceImplTest {
 
     @Test
     void checkGameForAllAnswersWrong(){
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationServiceImpl.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
 
         GameService service = context.getBean(GameService.class);
         service.startGame("Irina");

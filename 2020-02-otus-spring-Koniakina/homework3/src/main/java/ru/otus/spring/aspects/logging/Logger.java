@@ -1,4 +1,4 @@
-package ru.otus.spring.logging;
+package ru.otus.spring.aspects.logging;
 
 import java.lang.annotation.*;
 

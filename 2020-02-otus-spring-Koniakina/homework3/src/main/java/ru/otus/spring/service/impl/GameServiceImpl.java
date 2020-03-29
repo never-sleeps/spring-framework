@@ -3,7 +3,7 @@ package ru.otus.spring.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.dao.GameDao;
 import ru.otus.spring.dao.QuestionDao;
-import ru.otus.spring.logging.Logger;
+import ru.otus.spring.aspects.logging.Logger;
 import ru.otus.spring.service.GameService;
 
 @Service
@@ -22,7 +22,6 @@ public class GameServiceImpl implements GameService {
         return questionDao.next().getQuestion();
     }
 
-    @Logger
     @Override
     public boolean checkAnswerIsRight(String answer) {
         if(questionDao.current().getAnswer().equals(answer)){
@@ -32,13 +31,11 @@ public class GameServiceImpl implements GameService {
         return false;
     }
 
-    @Logger
     @Override
     public String getAnswer() {
         return questionDao.current().getAnswer();
     }
 
-    @Logger
     @Override
     public boolean isWin() {
         return gameDao.getScore() == questionDao.getCount();
@@ -50,7 +47,6 @@ public class GameServiceImpl implements GameService {
         gameDao.getGameForStudent(name);
     }
 
-    @Logger
     @Override
     public int questionCount() {
         return questionDao.getCount();

@@ -1,43 +1,46 @@
 package ru.otus.spring.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.logging.Logger;
+import ru.otus.spring.dao.impl.QuestionDaoImpl;
+import ru.otus.spring.aspects.logging.Logger;
 import ru.otus.spring.service.ApplicationService;
 import ru.otus.spring.service.GameService;
+import ru.otus.spring.service.MessageService;
 import ru.otus.spring.view.Console;
-
 
 import java.util.stream.IntStream;
 
+@Slf4j
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
 
-    private final GameService gameService;
+    private final MessageService messageService;
     private final Console console;
-    private final MessageServiceImpl ms;
+    private final GameService gameService;
 
-
-    public ApplicationServiceImpl(GameService gameService, Console console, MessageServiceImpl ms) {
-        this.gameService = gameService;
+    public ApplicationServiceImpl(MessageService messageService,
+                                  Console console,
+                                  GameService gameService) {
+        this.messageService = messageService;
         this.console = console;
-        this.ms = ms;
+        this.gameService = gameService;
     }
 
-    @Logger
     public void start(){
 
-        console.write(ms.getMessage("application.start"));
-        console.write(ms.getMessage("user.name"));
+        console.write(messageService.getMessage("application.start"));
+        console.write(messageService.getMessage("user.name"));
         gameService.startGame(console.read());
 
         IntStream.range(0, gameService.questionCount()).forEach(i ->{
             console.write(gameService.getQuestion());
             if(!gameService.checkAnswerIsRight(console.read())) {
-                console.write(ms.getMessage("application.right.answer") + ": " + gameService.getAnswer());
+                console.write(messageService.getMessage("application.right.answer") + ": " + gameService.getAnswer());
             }
         });
 
         console.write(gameService.isWin()?
-                ms.getMessage("application.win") : ms.getMessage("application.lose"));
+                messageService.getMessage("application.win") : messageService.getMessage("application.lose"));
     }
 }

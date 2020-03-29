@@ -5,7 +5,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.config.ApplicationProperties;
 import ru.otus.spring.dao.QuestionDao;
-import ru.otus.spring.logging.Logger;
+import ru.otus.spring.aspects.logging.Logger;
 import ru.otus.spring.model.Question;
 
 import java.io.InputStreamReader;
