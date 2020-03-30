@@ -2,31 +2,35 @@ package ru.otus.spring.dao;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.spring.dao.impl.GameDaoImpl;
 import ru.otus.spring.entity.Game;
-import org.junit.jupiter.api.Test;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class GameDaoImplTest {
+@DisplayName("Класс GameDaoImplTest")
+@SpringBootTest
+public class GameDaoImplTest {
 
     GameDao gameDao = new GameDaoImpl();
 
     @Test
-    void checkGetGameForStudent() {
+    public void checkGetGameForStudent() {
         Game game = gameDao.getGameForStudent("Irina");
         Assertions.assertEquals(game, gameDao.getGameForStudent("Irina"));
     }
 
     @Test
-    void checkIncreaseScore() {
+    public void checkIncreaseScore() {
         Game game = gameDao.getGameForStudent("Irina");
         game.increaseScore();
         assertEquals(game.getScore(), 1);
     }
 
     @Test
-    void checkGetScore() {
+    public void checkGetScore() {
         Game game = gameDao.getGameForStudent("Irina");
         assertEquals(game.getScore(), 0);
     }

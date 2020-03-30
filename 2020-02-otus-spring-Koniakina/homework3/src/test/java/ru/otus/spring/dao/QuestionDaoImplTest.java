@@ -1,32 +1,41 @@
 package ru.otus.spring.dao;
 
 import org.junit.jupiter.api.Assertions;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.spring.config.ApplicationProperties;
-import ru.otus.spring.dao.impl.QuestionDaoImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import ru.otus.spring.config.ApplicationProperties;
+import ru.otus.spring.model.Question;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+@DisplayName("Класс получения вопросов")
+@SpringBootTest
+public class QuestionDaoImplTest {
 
-class QuestionDaoImplTest {
-
-    @MockBean
+    @Autowired
     private ApplicationProperties applicationProperties;
-    QuestionDao questionDao = new QuestionDaoImpl(applicationProperties);
+    @Autowired
+    private QuestionDao questionDao;
 
+    @DisplayName("Проверка получения количества вопросов")
     @Test
-    void checkNext() {
-        Assertions.assertEquals(questionDao.next().getQuestion(), "Сколько примитивных типов в java?");
+    public void checkGetCount() {
+        Assertions.assertEquals(5, questionDao.getCount());
     }
 
+    @DisplayName("Проверка получения следующего вопроса")
     @Test
-    void checkCurrent() {
-        questionDao.next();
-        Assertions.assertEquals(questionDao.current().getQuestion(), "Сколько примитивных типов в java?");
+    public void checkNext() {
+        Question nextQuestion = questionDao.next();
+        Assertions.assertEquals(nextQuestion.getQuestion(), "Сколько примитивных типов в java?");
+        Assertions.assertEquals(nextQuestion.getAnswer(), "8");
     }
 
+    @DisplayName("Проверка получения текущего вопроса")
     @Test
-    void checkGetCount() {
-        assertEquals(questionDao.getCount(), 5);
+    public void checkCurrent() {
+        Question currentQuestion = questionDao.current();
+        Assertions.assertEquals(currentQuestion.getQuestion(), "Сколько примитивных типов в java?");
+        Assertions.assertEquals(currentQuestion.getAnswer(), "8");
     }
 }

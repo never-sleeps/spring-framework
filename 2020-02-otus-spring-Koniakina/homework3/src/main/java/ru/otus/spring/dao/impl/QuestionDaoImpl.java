@@ -52,7 +52,7 @@ public class QuestionDaoImpl implements QuestionDao {
         CsvToBean<Question> csvToBean = new CsvToBeanBuilder<Question>(isReader)
                 .withType(Question.class)
                 .withIgnoreLeadingWhiteSpace(true)
-                .withSkipLines(1)
+                .withSkipLines(0)
                 .build();
         questions = csvToBean.parse();
         listIterator = questions.listIterator();
