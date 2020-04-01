@@ -28,18 +28,15 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     public void start(){
-
         console.write(messageService.getMessage("application.start"));
         console.write(messageService.getMessage("user.name"));
         gameService.startGame(console.read());
-
         IntStream.range(0, gameService.questionCount()).forEach(i ->{
             console.write(gameService.getQuestion());
             if(!gameService.checkAnswerIsRight(console.read())) {
                 console.write(messageService.getMessage("application.right.answer") + ": " + gameService.getAnswer());
             }
         });
-
         console.write(gameService.isWin()?
                 messageService.getMessage("application.win") : messageService.getMessage("application.lose"));
     }
