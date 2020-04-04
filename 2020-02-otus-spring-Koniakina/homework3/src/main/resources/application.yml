@@ -1,0 +1,14 @@
+application:
+  locale: ru_RU
+  csvFileName: csv/questions.csv
+  languages:
+    ru_RU: Русский
+    en_US: English
+spring:
+  output:
+    ansi:
+      enabled: always
+  messages:
+    basename: i18n.bundle.messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
