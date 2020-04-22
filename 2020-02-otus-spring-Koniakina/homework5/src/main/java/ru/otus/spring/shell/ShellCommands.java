@@ -6,6 +6,7 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.spring.model.Author;
 import ru.otus.spring.model.Book;
+import ru.otus.spring.model.Genre;
 import ru.otus.spring.service.AuthorService;
 import ru.otus.spring.service.BookService;
 import ru.otus.spring.service.GenreService;
@@ -38,7 +39,7 @@ public class ShellCommands {
                 : String.format("Данные книги с ID %d успешно обновлены: %s", id, book.toString());
     }
 
-    @ShellMethod(value = "Count books", key = {"count books", "b books"})
+    @ShellMethod(value = "Count books", key = {"count books", "count b"})
     public String countBooks() {
         return String.format("Количество книг в базе: %d", bookService.countBooks());
     }
@@ -95,7 +96,6 @@ public class ShellCommands {
         return String.format("Список книг: %s", stringBuilder.toString());
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////
     @ShellMethod(value = "Create author", key = {"create author", "ca"})
     public String createAuthor() {
         Author author = authorService.createAuthor(readAuthorName());
@@ -144,9 +144,53 @@ public class ShellCommands {
         return String.format("Список авторов: %s", stringBuilder.toString());
     }
 
+    @ShellMethod(value = "Create genre", key = {"create genre", "cg"})
+    public String createGenre() {
+        Genre genre = genreService.createGenre(readGenreTitle());
+        return String.format("Жанр: %s успешно добавлен", genre.toString());
+    }
 
+    @ShellMethod(value = "Update genre", key = {"update genre", "ug"})
+    public String updateGenre(@ShellOption int id) {
+        Genre genre = genreService.updateGenre(id, readGenreTitle());
+        return (genre == null) ? String.format("Жанр с ID %d отсутствует в библиотеке", id)
+                : String.format("Данные жанра с ID %d успешно обновлены: %s", id, genre.toString());
+    }
 
+    @ShellMethod(value = "Count genres", key = {"count genres", "count g"})
+    public String countGenres() {
+        return String.format("Количество жанров в библиотеке: %d", genreService.countGenres());
+    }
 
+    @ShellMethod(value = "Delete genre", key = {"delete genre", "dg"})
+    public String deleteGenre(@ShellOption int id) {
+        genreService.deleteGenre(id);
+        return String.format("Жанр с id '%d' был удален", id);
+    }
+
+    @ShellMethod(value = "Information about genre by ID", key = {"genre by id", "g by id"})
+    public String getGenreById(@ShellOption int id) {
+        Optional<Genre> genre = genreService.getGenreById(id);
+        return (genre.isPresent()) ? String.format("Жанр с id '%d': %s", id, genre.get().toString())
+                : String.format("В библиотеке нет жанра  с id '%d'", id);
+    }
+
+    @ShellMethod(value = "Information about genre by title", key = {"genre by title", "g by title"})
+    public String getGenreByTitle() {
+        String title = readGenreTitle();
+        Optional<Genre> genre = genreService.getGenreByTitle(title);
+        return (genre.isPresent()) ? String.format("Жанр '%s': %s", title, genre.get().toString())
+                : String.format("В библиотеке нет жанра '%s'", title);
+    }
+
+    @ShellMethod(value = "List of genres", key = {"all genres", "all g"})
+    public String getAllGenres() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Genre genre: genreService.getAllGenres()) {
+            stringBuilder.append("\n").append(genre.toString());
+        }
+        return String.format("Список жанров: %s", stringBuilder.toString());
+    }
 
     private String readBookTitle(){
         console.write("Введите название книги:");
@@ -161,10 +205,5 @@ public class ShellCommands {
     private String readGenreTitle(){
         console.write("Введите название жанра:");
         return console.read();
-    }
-
-    private int readID(){
-        console.write("Введите идентификатор:");
-        return Integer.parseInt(console.read());
     }
 }

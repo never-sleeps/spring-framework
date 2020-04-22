@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.dao.GenreDao;
 import ru.otus.spring.exception.CreatingEntityException;
+import ru.otus.spring.exception.UpdatingEntityException;
+import ru.otus.spring.model.Author;
 import ru.otus.spring.model.Genre;
 import ru.otus.spring.service.GenreService;
 import ru.otus.spring.view.Console;
@@ -31,8 +33,16 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre updateGenre(Genre genre) {
-        return genreDao.update(genre);
+    public Genre updateGenre(long id, String title) {
+        if (!genreDao.getById(id).isPresent()) {
+            return null;
+        } else {
+            Genre newGenre = Genre.builder().id(id).title(title).build();
+            if (genreDao.isExist(newGenre)) {
+                throw new UpdatingEntityException(String.format("%s уже существует", newGenre.toString()));
+            }
+            return genreDao.update(newGenre);
+        }
     }
 
     @Override

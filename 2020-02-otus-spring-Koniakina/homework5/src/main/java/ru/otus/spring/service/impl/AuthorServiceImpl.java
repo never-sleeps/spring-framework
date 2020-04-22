@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.dao.AuthorDao;
 import ru.otus.spring.exception.CreatingEntityException;
+import ru.otus.spring.exception.UpdatingEntityException;
 import ru.otus.spring.model.Author;
 import ru.otus.spring.service.AuthorService;
 
@@ -40,10 +41,10 @@ public class AuthorServiceImpl implements AuthorService {
         if (!authorDao.getById(id).isPresent()) {
             return null;
         } else {
-            Author newAuthor = Author.builder()
-                    .id(id)
-                    .fullName(fullName)
-                    .build();
+            Author newAuthor = Author.builder().id(id).fullName(fullName).build();
+            if (authorDao.isExist(newAuthor)) {
+                throw new UpdatingEntityException(String.format("%s уже существует", newAuthor.toString()));
+            }
             return authorDao.update(newAuthor);
         }
     }

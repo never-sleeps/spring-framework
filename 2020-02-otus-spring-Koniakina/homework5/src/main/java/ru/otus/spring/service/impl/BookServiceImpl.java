@@ -6,6 +6,7 @@ import ru.otus.spring.dao.AuthorDao;
 import ru.otus.spring.dao.BookDao;
 import ru.otus.spring.dao.GenreDao;
 import ru.otus.spring.exception.CreatingEntityException;
+import ru.otus.spring.exception.UpdatingEntityException;
 import ru.otus.spring.model.Author;
 import ru.otus.spring.model.Book;
 import ru.otus.spring.model.Genre;
@@ -54,12 +55,10 @@ public class BookServiceImpl implements BookService {
         } else {
             Author author = authorService.getRegisteredAuthor(authorName);
             Genre genre = genreService.getRegisteredGenre(genreTitle);
-            Book book = Book.builder()
-                    .id(id)
-                    .author(author)
-                    .genre(genre)
-                    .title(bookTitle)
-                    .build();
+            Book book = Book.builder().id(id).author(author).genre(genre).title(bookTitle).build();
+            if (bookDao.isExist(book)) {
+                throw new UpdatingEntityException(String.format("%s уже существует", book.toString()));
+            }
             return bookDao.update(book);
         }
     }
