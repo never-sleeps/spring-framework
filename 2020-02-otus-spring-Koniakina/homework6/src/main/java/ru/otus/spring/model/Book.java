@@ -44,11 +44,12 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Книга {" +
-                "id: " + id + ", '" + title + ", " +
-                "авторы: " + authors.toString() + ", " +
-                "жанры: " + genres.toString() + ", " +
-                "комментарии к книге: " + comments.toString() +
+        return "Книга{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", авторы=" + authors +
+                ", жанры=" + genres +
+                ", комментарии=" + comments.toString() +
                 '}';
     }
 }

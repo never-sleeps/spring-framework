@@ -4,6 +4,7 @@ insert into AUTHORS (ID, FULL_NAME) values (3, 'Эрик Фримен');
 insert into AUTHORS (ID, FULL_NAME) values (4, 'Элизабет Фримен');
 insert into AUTHORS (ID, FULL_NAME) values (5, 'Стивен Хокинг');
 insert into AUTHORS (ID, FULL_NAME) values (6, 'Люси Хокинг');
+insert into AUTHORS (ID, FULL_NAME) values (7, 'Роберт Мартин');
 
 insert into GENRES (ID, TITLE) values (1, 'Роман');
 insert into GENRES (ID, TITLE) values (2, 'Приключения');
@@ -25,9 +26,8 @@ insert into BOOK_AUTHOR(BOOK_ID, AUTHOR_ID) values(3, 4);
 insert into BOOK_AUTHOR(BOOK_ID, AUTHOR_ID) values(4, 5);
 insert into BOOK_AUTHOR(BOOK_ID, AUTHOR_ID) values(4, 6);
 
-insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (1, 1);
 insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (1, 2);
-insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (2, 1);
+insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (1, 3);
 insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (2, 2);
 insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (3, 4);
 insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (4, 2);

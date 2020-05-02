@@ -21,4 +21,12 @@ public class Genre {
 
     @Column(name = "title", nullable = false, unique = true)
     private String title;
+
+    @Override
+    public String toString() {
+        return "Жанр{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }

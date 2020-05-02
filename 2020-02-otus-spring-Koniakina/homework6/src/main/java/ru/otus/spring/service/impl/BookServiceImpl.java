@@ -2,9 +2,9 @@ package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.dao.BookDao;
 import ru.otus.spring.exception.EntityDeleteException;
-import ru.otus.spring.exception.EntityException;
 import ru.otus.spring.exception.EntityUpdateException;
 import ru.otus.spring.model.Author;
 import ru.otus.spring.model.Book;
@@ -18,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookServiceImpl implements BookService {
 
     private final BookDao bookDao;
@@ -33,15 +34,11 @@ public class BookServiceImpl implements BookService {
     public Book createBook(String bookTitle, String[] authorNames, String[] genreTitles) {
         Book newBook = Book.builder()
                 .title(bookTitle)
-                .authors(List.of())
-                .genres(List.of())
+                .authors(getRegistredAuthors(authorNames))
+                .genres(getRegistredGenres(genreTitles))
                 .comments(List.of())
                 .build();
-        newBook = bookDao.create(newBook);
-
-        newBook.setAuthors(getRegistredAuthors(authorNames));
-        newBook.setGenres(getRegistredGenres(genreTitles));
-        return bookDao.update(newBook);
+        return bookDao.create(newBook);
     }
 
     @Override

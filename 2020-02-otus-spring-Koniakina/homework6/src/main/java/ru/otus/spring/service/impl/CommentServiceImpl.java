@@ -2,6 +2,7 @@ package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.dao.BookDao;
 import ru.otus.spring.dao.CommentDao;
 import ru.otus.spring.exception.EntityCreateException;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentServiceImpl implements CommentService {
     private final CommentDao commentDao;
     private final BookDao bookDao;

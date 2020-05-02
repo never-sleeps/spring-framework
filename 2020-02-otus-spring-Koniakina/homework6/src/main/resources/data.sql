@@ -25,9 +25,8 @@ insert into BOOK_AUTHOR(BOOK_ID, AUTHOR_ID) values(3, 4);
 insert into BOOK_AUTHOR(BOOK_ID, AUTHOR_ID) values(4, 5);
 insert into BOOK_AUTHOR(BOOK_ID, AUTHOR_ID) values(4, 6);
 
-insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (1, 1);
 insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (1, 2);
-insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (2, 1);
+insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (1, 3);
 insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (2, 2);
 insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (3, 4);
 insert into BOOK_GENRE(BOOK_ID, GENRE_ID) values (4, 2);

@@ -2,6 +2,7 @@ package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.dao.GenreDao;
 import ru.otus.spring.exception.EntityDeleteException;
 import ru.otus.spring.exception.EntityUpdateException;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class GenreServiceImpl implements GenreService {
     private final GenreDao genreDao;
 
