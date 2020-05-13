@@ -107,10 +107,12 @@ class CommentRepositoryTest {
         SessionFactory sessionFactory = testEntityManager
                 .getEntityManager().getEntityManagerFactory().unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
+        sessionFactory.getStatistics().clear();
 
         val comments = commentRepository.findAll();
         assertThat(comments).isNotNull().hasSize(EXPECTED_NUMBER_OF_COMMENTS)
                 .allMatch(s -> !s.getText().isEmpty());
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
+        sessionFactory.getStatistics().setStatisticsEnabled(false);
     }
 }

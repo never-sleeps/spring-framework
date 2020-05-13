@@ -96,10 +96,12 @@ class GenreRepositoryTest {
         SessionFactory sessionFactory = testEntityManager
                 .getEntityManager().getEntityManagerFactory().unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
+        sessionFactory.getStatistics().clear();
 
         val genres = genreRepository.findAll();
         assertThat(genres).isNotNull().hasSize(EXPECTED_NUMBER_OF_GENRES)
                 .allMatch(s -> !s.getTitle().isEmpty());
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
+        sessionFactory.getStatistics().setStatisticsEnabled(false);
     }
 }

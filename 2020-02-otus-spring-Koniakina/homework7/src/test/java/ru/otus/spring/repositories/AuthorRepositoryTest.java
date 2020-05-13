@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import ru.otus.spring.model.Author;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Репозиторий на основе Spring Data Jpa для работы с авторами")
 @DataJpaTest
@@ -97,10 +96,13 @@ class AuthorRepositoryTest {
         SessionFactory sessionFactory = testEntityManager
                 .getEntityManager().getEntityManagerFactory().unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
+        sessionFactory.getStatistics().clear();
 
         val authors = authorRepository.findAll();
         assertThat(authors).isNotNull().hasSize(EXPECTED_NUMBER_OF_AUTHORS)
                 .allMatch(s -> !s.getFullName().isEmpty());
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
+
+        sessionFactory.getStatistics().setStatisticsEnabled(false);
     }
 }

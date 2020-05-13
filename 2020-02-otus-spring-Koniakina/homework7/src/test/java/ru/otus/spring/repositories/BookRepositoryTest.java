@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Репозиторий на основе Spring Data Jpa для работы с книгами ")
 @DataJpaTest
@@ -139,6 +138,7 @@ class BookRepositoryTest {
         SessionFactory sessionFactory = testEntityManager
                 .getEntityManager().getEntityManagerFactory().unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
+        sessionFactory.getStatistics().clear();
 
         val books = bookRepository.findAll();
         assertThat(books).isNotNull().hasSize(EXPECTED_NUMBER_OF_BOOKS)
@@ -150,5 +150,6 @@ class BookRepositoryTest {
             System.out.println(b.toString());
         }
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
+        sessionFactory.getStatistics().setStatisticsEnabled(false);
     }
 }
