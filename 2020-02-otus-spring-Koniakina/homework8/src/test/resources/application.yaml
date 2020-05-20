@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      database: simpletestdb
+      port: 27017
+      host: localhost
+logging:
+  level:
+    ROOT: ERROR
