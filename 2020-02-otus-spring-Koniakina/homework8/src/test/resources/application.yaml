@@ -1,8 +1,8 @@
 spring:
   data:
     mongodb:
-      database: simpletestdb
-      port: 27017
+      database: library
+      port: 0
       host: localhost
 logging:
   level:
