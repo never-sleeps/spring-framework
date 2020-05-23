@@ -9,6 +9,6 @@
 5. **[DAO на Spring JDBC](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework5)**
 6. **[JPQL, Spring ORM, DAO на основе Spring ORM + JPA](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework6)**
 7. **[Spring Data: Spring Data JPA](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework7)**
-8. **[Spring Data для подключения к нереляционным БД, MongoDB]()**
+8. **[Spring Data для подключения к нереляционным БД, MongoDB](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework8)**
 9. **[Spring MVC View]()**
 10. **[Современные приложения на Spring MVC, AJAX и REST-контроллеры]()**
