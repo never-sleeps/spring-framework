@@ -3,18 +3,19 @@ package ru.otus.spring.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.spring.dao.repositories.CommentRepository;
 import ru.otus.spring.exception.EntityDeleteException;
 import ru.otus.spring.exception.EntityUpdateException;
 import ru.otus.spring.model.Author;
 import ru.otus.spring.model.Book;
+import ru.otus.spring.model.Comment;
 import ru.otus.spring.model.Genre;
-import ru.otus.spring.repositories.BookRepository;
-import ru.otus.spring.repositories.CommentRepository;
+import ru.otus.spring.dao.repositories.BookRepository;
 import ru.otus.spring.service.AuthorService;
 import ru.otus.spring.service.BookService;
+import ru.otus.spring.service.CommentService;
 import ru.otus.spring.service.GenreService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +27,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final GenreService genreService;
-    private final CommentRepository commentRepository;
-
+    private final CommentService commentService;
 
     @Override
     public long countBooks() {
@@ -35,18 +35,28 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book createBook(String bookTitle, String[] authorNames, String[] genreTitles) {
+    public Book createBook(String bookTitle, String authorName, String genreTitle) {
         Book newBook = Book.builder()
                 .title(bookTitle)
-                .authors(getRegistredAuthors(authorNames))
-                .genres(getRegistredGenres(genreTitles))
-                .comments(List.of())
+                .author(getRegistredAuthor(authorName))
+                .genre(getRegistredGenre(genreTitle))
                 .build();
         return bookRepository.save(newBook);
     }
 
     @Override
-    public Book updateBook(String id, String bookTitle, String[] authorNames, String[] genreTitles) {
+    public Book createBook(Book book){
+        Book createdBook = createBook(book.getTitle(), book.getAuthor().getFullName(), book.getGenre().getTitle());
+        if(book.getComment() != null && book.getComment().getText().length() > 0){
+            Comment comment = commentService.createComment(book.getComment().getText());
+            createdBook.setComment(comment);
+            createdBook = bookRepository.save(createdBook);
+        }
+        return createdBook;
+    }
+
+    @Override
+    public Book updateBook(String id, String bookTitle, String authorName, String genreTitle) {
         Optional<Book> optionalBook = findBookById(id);
         if (optionalBook.isEmpty()) {
             throw new EntityUpdateException(String.format("Книга с id '%s' не найдена", id));
@@ -54,11 +64,24 @@ public class BookServiceImpl implements BookService {
         Book book = optionalBook.get();
         if(!bookTitle.isEmpty())
             book.setTitle(bookTitle);
-        if(!genreTitles[0].isEmpty())
-            book.setAuthors(getRegistredAuthors(authorNames));
-        if(!genreTitles[0].isEmpty())
-            book.setGenres(getRegistredGenres(genreTitles));
+        if(!authorName.isEmpty())
+            book.setAuthor(getRegistredAuthor(authorName));
+        if(!genreTitle.isEmpty())
+            book.setGenre(getRegistredGenre(genreTitle));
         return bookRepository.save(book);
+    }
+
+    @Override
+    public Book updateBook(Book book){
+        Book updatedBook = updateBook(book.getId(), book.getTitle(),
+                book.getAuthor().getFullName(), book.getGenre().getTitle());
+        if(book.getComment() != null && book.getComment().getText().length() > 0){
+            Comment comment = commentService.createComment(book.getComment().getText());
+            updatedBook.setComment(comment);
+        } else{
+            updatedBook.setComment(null);
+        }
+        return bookRepository.save(updatedBook);
     }
 
     @Override
@@ -67,9 +90,7 @@ public class BookServiceImpl implements BookService {
         if(optionalBook.isEmpty())
             throw new EntityDeleteException(String.format("Книга с id '%s' не найдена", id));
 
-        Book book = optionalBook.get();
-        commentRepository.deleteAllByBook(book);
-        bookRepository.delete(book);
+        bookRepository.delete(optionalBook.get());
     }
 
     @Override
@@ -85,13 +106,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findBooksByAuthor(String name) {
         Optional<Author> author = authorService.findAuthorByName(name);
-        return (author.isPresent()) ? bookRepository.findAllByAuthorsContains(author.get()) : List.of();
+        return (author.isPresent()) ? bookRepository.findAllByAuthor(author.get()) : List.of();
     }
 
     @Override
     public List<Book> findBooksByGenre(String title) {
         Optional<Genre> genre = genreService.findGenreByTitle(title);
-        return (genre.isPresent()) ? bookRepository.findAllByGenresContains(genre.get()) : List.of();
+        return (genre.isPresent()) ? bookRepository.findAllByGenre(genre.get()) : List.of();
     }
 
     @Override
@@ -100,20 +121,12 @@ public class BookServiceImpl implements BookService {
     }
 
 
-    private List<Author> getRegistredAuthors(String[] authorNames){
-        List<Author> authors = new ArrayList<>();
-        for (String authorName: authorNames) {
-            authors.add(authorService.getRegisteredAuthor(authorName));
-        }
-        return authors;
+    private Author getRegistredAuthor(String authorName){
+        return authorService.getRegisteredAuthor(authorName);
     }
 
-    private List<Genre> getRegistredGenres(String[] genreTitles){
-        List<Genre> genres = new ArrayList<>();
-        for (String genreTitle: genreTitles) {
-            genres.add(genreService.getRegisteredGenre(genreTitle));
-        }
-        return genres;
+    private Genre getRegistredGenre(String genreTitle){
+        return genreService.getRegisteredGenre(genreTitle);
     }
 
 }

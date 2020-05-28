@@ -1,4 +1,4 @@
-package ru.otus.spring.repositories;
+package ru.otus.spring.dao.repositories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.spring.model.Author;

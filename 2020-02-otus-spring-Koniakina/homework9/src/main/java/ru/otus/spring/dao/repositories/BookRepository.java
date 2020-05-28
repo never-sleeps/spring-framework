@@ -1,4 +1,4 @@
-package ru.otus.spring.repositories;
+package ru.otus.spring.dao.repositories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.spring.model.Author;
@@ -11,12 +11,12 @@ public interface BookRepository extends MongoRepository<Book, String> {
 
     Book findByTitle(String title);
 
-    List<Book> findAllByAuthorsContains(Author author);
+    List<Book> findAllByAuthor(Author author);
 
-    List<Book> findAllByGenresContains(Genre genre);
+    List<Book> findAllByGenre(Genre genre);
 
-    void deleteAllByAuthorsContains(Author author);
+    void deleteAllByAuthor(Author author);
 
-    void deleteAllByGenresContains(Genre genre);
+    void deleteAllByGenre(Genre genre);
 
 }

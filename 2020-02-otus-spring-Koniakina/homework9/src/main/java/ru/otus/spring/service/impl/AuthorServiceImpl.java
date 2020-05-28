@@ -6,10 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.exception.EntityDeleteException;
 import ru.otus.spring.exception.EntityUpdateException;
 import ru.otus.spring.model.Author;
-import ru.otus.spring.model.Book;
-import ru.otus.spring.repositories.AuthorRepository;
-import ru.otus.spring.repositories.BookRepository;
-import ru.otus.spring.repositories.CommentRepository;
+import ru.otus.spring.dao.repositories.AuthorRepository;
+import ru.otus.spring.dao.repositories.BookRepository;
 import ru.otus.spring.service.AuthorService;
 
 import java.util.List;
@@ -22,7 +20,6 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
-    private final CommentRepository commentRepository;
 
     @Override
     public long countAuthors() {
@@ -53,8 +50,7 @@ public class AuthorServiceImpl implements AuthorService {
             throw new EntityDeleteException(String.format("Автор с id '%s' не найден", id));
 
         Author author = optionalAuthor.get();
-        for (Book book : bookRepository.findAllByAuthorsContains(author)) commentRepository.deleteAllByBook(book);
-        bookRepository.deleteAllByAuthorsContains(author);
+        bookRepository.deleteAllByAuthor(author);
         authorRepository.delete(optionalAuthor.get());
     }
 

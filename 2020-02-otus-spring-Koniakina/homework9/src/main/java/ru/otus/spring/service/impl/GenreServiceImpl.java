@@ -5,12 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.exception.EntityDeleteException;
 import ru.otus.spring.exception.EntityUpdateException;
-import ru.otus.spring.model.Author;
-import ru.otus.spring.model.Book;
 import ru.otus.spring.model.Genre;
-import ru.otus.spring.repositories.BookRepository;
-import ru.otus.spring.repositories.CommentRepository;
-import ru.otus.spring.repositories.GenreRepository;
+import ru.otus.spring.dao.repositories.BookRepository;
+import ru.otus.spring.dao.repositories.GenreRepository;
 import ru.otus.spring.service.GenreService;
 
 import java.util.List;
@@ -24,7 +21,6 @@ public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
     private final BookRepository bookRepository;
-    private final CommentRepository commentRepository;
 
     @Override
     public long countGenres() {
@@ -55,8 +51,7 @@ public class GenreServiceImpl implements GenreService {
             throw new EntityDeleteException(String.format("Жанр с id '%s' не найден", id));
 
         Genre genre = optionalGenre.get();
-        for (Book book : bookRepository.findAllByGenresContains(genre)) commentRepository.deleteAllByBook(book);
-        bookRepository.deleteAllByGenresContains(genre);
+        bookRepository.deleteAllByGenre(genre);
         genreRepository.delete(genre);
     }
 

@@ -8,12 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Document(collection = "book")
 public class Book {
     @Id
@@ -25,29 +23,35 @@ public class Book {
 
     @DBRef
     @NotNull
-    private List<Author> authors;
+    private Author author;
 
     @DBRef
     @NotNull
-    private List<Genre> genres;
+    private Genre genre;
 
-    @DBRef(lazy = true)
-    @ToString.Exclude
-    private List<Comment> comments;
+    @Field
+    private Comment comment;
 
-    public Book(String title, List<Author> authors, List<Genre> genres) {
+    public Book(String title, Author author, Genre genre) {
         this.title = title;
-        this.authors = authors;
-        this.genres = genres;
-        this.comments = List.of();
+        this.author = author;
+        this.genre = genre;
     }
 
-    public Book(String id, String title, List<Author> authors, List<Genre> genres) {
+    public Book(String title, Author author, Genre genre, Comment comment) {
         this.id = id;
         this.title = title;
-        this.authors = authors;
-        this.genres = genres;
-        this.comments = List.of();
+        this.author = author;
+        this.genre = genre;
+        this.comment = comment;
+    }
+
+    public Book(String id, String title, Author author, Genre genre, Comment comment) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.comment = comment;
     }
 
     @Override
@@ -55,8 +59,8 @@ public class Book {
         return "Книга{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", авторы=" + authors +
-                ", жанры=" + genres +
+                ", авторы=" + author +
+                ", жанры=" + genre +
                 '}';
     }
 }

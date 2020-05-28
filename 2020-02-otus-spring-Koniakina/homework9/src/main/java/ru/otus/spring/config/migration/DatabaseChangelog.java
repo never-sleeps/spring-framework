@@ -38,16 +38,21 @@ public class DatabaseChangelog {
         Genre educational = mongoTemplate.save(new Genre("Учебная литература"));
         Genre forKids = mongoTemplate.save(new Genre("Детская литература"));
 
-        Book theTwelveChairs = mongoTemplate.save(new Book("Двенадцать стульев",
-                List.of(IlyaIlf, EvgenyPetrov), List.of(adventure, comedy)));
-        Book designPatterns = mongoTemplate.save(new Book("Паттерны проектирования",
-                List.of(EricFreeman, ElizabethFreeman), List.of(educational)));
-        Book GeorgeAndTheSecretsOfTheUniverse = mongoTemplate.save(new Book("Джордж и тайны Вселенной",
-                List.of(StephenHawking), List.of(adventure, educational, forKids)));
+        Comment comment1 = new Comment("Полезно для програмиста");
+        Comment comment2 = new Comment("Про космос");
+        Comment comment3 = new Comment("Для детей от 7 до 11 лет");
 
-        mongoTemplate.save(new Comment("Полезно для програмиста", designPatterns));
-        mongoTemplate.save(new Comment("Про космос", GeorgeAndTheSecretsOfTheUniverse));
-        mongoTemplate.save(new Comment("Для детей от 7 до 11 лет", GeorgeAndTheSecretsOfTheUniverse));
+        Book theTwelveChairs = mongoTemplate.save(new Book("Двенадцать стульев",
+                IlyaIlf,
+                adventure));
+        Book designPatterns = mongoTemplate.save(new Book("Паттерны проектирования",
+                EricFreeman,
+                educational,
+                comment1));
+        Book GeorgeAndTheSecretsOfTheUniverse = mongoTemplate.save(new Book("Джордж и тайны Вселенной",
+                StephenHawking,
+                adventure,
+                comment2));
     }
 
 }

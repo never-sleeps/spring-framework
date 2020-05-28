@@ -9,9 +9,13 @@ public interface BookService {
 
     long countBooks();
 
-    Book createBook(String bookTitle, String[] authorName, String[] genreTitle);
+    Book createBook(String bookTitle, String authorName, String genreTitle);
 
-    Book updateBook(String id, String bookTitle, String authorName[], String genreTitle[]);
+    Book createBook(Book book);
+
+    Book updateBook(String id, String bookTitle, String authorName, String genreTitle);
+
+    Book updateBook(Book book);
 
     void deleteBook(String id);
 
