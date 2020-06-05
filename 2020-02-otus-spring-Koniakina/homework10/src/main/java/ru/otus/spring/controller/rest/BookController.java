@@ -39,7 +39,7 @@ public class BookController {
         return bookService.updateBook(book);
     }
 
-    @GetMapping("/api/book/{id}/delete")
+    @DeleteMapping("/api/book/{id}/delete")
     public void delete(@PathVariable("id") String id) {
         log.info("Удаление книги с id: " + id);
         bookService.deleteBook(id);

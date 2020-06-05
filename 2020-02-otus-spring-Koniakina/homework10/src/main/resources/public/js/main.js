@@ -38,7 +38,7 @@ function deleteItem(url, successUrl) {
     if (confirm($("#deleteText").text() + '?')) {
         $.ajax({
             url: url,
-            type: 'GET',
+            type: 'DELETE',
             success: function (result) {
                 goToPage(successUrl)
             },
