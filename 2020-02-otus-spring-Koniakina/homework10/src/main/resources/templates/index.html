@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring Library</title>
+    <script src="webjars/jquery/3.5.1/jquery.min.js" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+    <script src="/webjars/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="/webjars/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="js/main.js" th:src="@{/js/main.js}"></script>
+</head>
+<body class="bg-light">
+<div class="container">
+    <div th:insert="~{fragments/navbar :: navbar}"></div>
+    <h2 th:text="#{localized.library}">Библиотека</h2>
+    <table class="table thead-light table-striped table-hover w-auto">
+        <thead>
+        <tr>
+            <th th:text="#{localized.bookId}">ID</th>
+            <th th:text="#{localized.bookTitle}">Name</th>
+            <th th:text="#{localized.author}">Author</th>
+            <th th:text="#{localized.genre}">Genre</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <a class="btn btn-outline-primary btn-sm"
+       th:href="@{'/book/add'}" href="create.html"
+       th:text="#{localized.addBook}">Create</a>
+</div>
+    <script>
+        $(function () {
+            $.get('/api/book/').done(function(books) {
+                books.forEach(function(book) {
+                    var id = book.id;
+                    $('tbody').append(`
+                        <tr>
+                            <td>${book.id}</td>
+                            <td>${book.title}</td>
+                            <td>${book.author.fullName}</td>
+                            <td>${book.genre.title}</td>
+                            <td>
+                                <a type="button" class="btn btn-primary btn-sm"
+                                href="/book/${id}">${getLocalizedText("edit")}</a>
+                            </td>
+                            <td>
+                                <input type="button" value="${getLocalizedText("delete")}"
+                                class="btn btn-secondary btn-sm"
+                                onclick="deleteItem('/api/book/${id}', '/book')">
+                            </td>
+                        </tr>
+                    `)
+                })
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Новая книга</title>
+    <script src="webjars/jquery/3.5.1/jquery.min.js" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+    <script src="/webjars/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="/webjars/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="js/main.js" th:src="@{/js/main.js}"></script>
+</head>
+<body class="bg-light">
+
+    <div class="container">
+        <div th:insert="~{fragments/navbar :: navbar}"></div>
+
+        <div class="form-group">
+            <label for="title" th:text="#{localized.bookTitle}">Title</label>
+            <input class="form-control" type="text" id="title" name="title">
+            <span class="text-danger font-italic" id="errorTitle" hidden th:utext="#{localized.requiredField}">...</span>
+        </div>
+
+        <div class="form-group">
+            <label for="author" th:text="#{localized.author}">author</label>
+            <input class="form-control" id="author" type="text" name="author"/>
+            <span class="text-danger font-italic" id="errorAuthor" hidden th:utext="#{localized.requiredField}">...</span>
+        </div>
+
+        <div class="form-group">
+            <label for="genre" th:text="#{localized.genre}">genre</label>
+            <input class="form-control" id="genre" type="text" name="genre"/>
+            <span class="text-danger font-italic" id="errorGenre" hidden th:utext="#{localized.requiredField}">...</span>
+        </div>
+
+        <div class="form-group">
+            <label for="comment" th:text="#{localized.comment}">comment</label>
+            <input class="form-control font-italic" id="comment" type="text"  name="comment"/>
+        </div>
+
+        <div class="form-group">
+            <input type="button" class="btn btn-primary"
+                   th:value="#{localized.back}" value="Cancel" onclick="goToPage('/book')">
+            <input type="button" class="btn btn-success"
+                   th:value="#{localized.save}" value="Create" onclick="create()">
+        </div>
+    </div>
+    <script>
+        function create() {
+            var item = {
+                title: $.trim($("#title").val()),
+                author: $.trim($("#author").val()),
+                genre: $.trim($("#genre").val()),
+                comment: $.trim($("#comment").val())
+            };
+
+            $("#errorTitle").attr("hidden", item.title !== '');
+            $("#errorAuthor").attr("hidden", item.author !== '');
+            $("#errorGenre").attr("hidden", item.genre !== '');
+            if (item.title === '' || item.author === '' || item.genre === '') {
+                return;
+            }
+
+            createItem('/api/book', item, '/book')
+        }
+    </script>
+</body>
+</html>
+
