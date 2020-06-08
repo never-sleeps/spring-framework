@@ -11,6 +11,6 @@
 7. **[Spring Data: Spring Data JPA](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework7)**
 8. **[Spring Data для подключения к нереляционным БД, MongoDB](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework8)**
 9. **[Spring MVC View](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework9)**
-10. Современные приложения на Spring MVC, AJAX и REST-контроллеры
+10. **[Современные приложения на Spring MVC, AJAX и REST-контроллеры](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework10)**
 11. Spring WebFlux
 12. Spring Security: Механизмы аутентификации
