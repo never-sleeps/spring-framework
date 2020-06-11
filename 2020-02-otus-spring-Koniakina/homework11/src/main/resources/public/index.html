@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring Library</title>
+    <script src="webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="/webjars/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="/js/main.js"></script>
+</head>
+<body class="bg-light">
+<div class="container">
+    <p id="header-block"></p>
+    <h2>Библиотека</h2>
+    <table class="table thead-light table-striped table-hover w-auto">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Жанр</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <a class="btn btn-outline-primary btn-sm"
+       href="create.html">Добавить новую книгу</a>
+</div>
+    <script>
+        $(function () {
+            $('#header-block').load('/navbar.html #navbar', 'html');
+        });
+        $(function() {
+            $.get('/api/book').done(function(books) {
+                loadBooksList(books);
+            });
+        });
+
+    </script>
+</body>
+</html>
