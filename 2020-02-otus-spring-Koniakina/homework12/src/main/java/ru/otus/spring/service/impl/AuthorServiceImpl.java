@@ -3,11 +3,11 @@ package ru.otus.spring.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.spring.dao.repositories.AuthorRepository;
+import ru.otus.spring.dao.repositories.BookRepository;
 import ru.otus.spring.exception.EntityDeleteException;
 import ru.otus.spring.exception.EntityUpdateException;
 import ru.otus.spring.model.Author;
-import ru.otus.spring.dao.repositories.AuthorRepository;
-import ru.otus.spring.dao.repositories.BookRepository;
 import ru.otus.spring.service.AuthorService;
 
 import java.util.List;

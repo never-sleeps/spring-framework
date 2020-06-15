@@ -3,14 +3,21 @@ package ru.otus.spring.controller.rest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.otus.spring.dao.repositories.UserRepository;
 import ru.otus.spring.model.Author;
 import ru.otus.spring.model.Book;
 import ru.otus.spring.model.Genre;
+import ru.otus.spring.security.UserDetailsServiceImp;
 import ru.otus.spring.service.BookService;
 import ru.otus.spring.service.MessageService;
 
@@ -28,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("Контроллер")
 @AutoConfigureDataMongo
 @WebMvcTest(LibraryController.class)
+@ExtendWith(SpringExtension.class)
 class LibraryControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -35,6 +43,8 @@ class LibraryControllerTest {
     private BookService bookService;
     @MockBean
     private MessageService messageService;
+    @MockBean
+    private UserDetailsServiceImp userDetailsService;
 
     private Book book;
 
@@ -50,6 +60,7 @@ class LibraryControllerTest {
 
     @DisplayName(" должен возвращать список книг")
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldCheckGetBooks() throws Exception {
         given(bookService.findAllBooks()).willReturn(List.of(book));
         mockMvc.perform(get("/book"))
@@ -61,6 +72,7 @@ class LibraryControllerTest {
 
     @DisplayName(" должен сохранять новую книгу")
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldCheckSaveBook() throws Exception {
         given(bookService.createBook(book)).willReturn(book);
         mockMvc.perform(post("/book/add", book.getId()))
@@ -71,6 +83,7 @@ class LibraryControllerTest {
 
     @DisplayName(" должен возвращать данные конкретной книги")
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldCheckGetBook() throws Exception {
         given(bookService.findBookById(book.getId())).willReturn(Optional.of(book));
         mockMvc.perform(get(String.format("/book/%s/edit", book.getId())))
@@ -82,6 +95,7 @@ class LibraryControllerTest {
 
     @DisplayName(" должен обновлять данные конкретной книги")
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldCheckUpdateBook() throws Exception {
         given(bookService.updateBook(book)).willReturn(book);
         mockMvc.perform(post(String.format("/book/%s/update", book.getId())))
@@ -92,6 +106,7 @@ class LibraryControllerTest {
 
     @DisplayName(" должен удалять книгу по id")
     @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
     void shouldCheckDeleteBook() throws Exception {
         doNothing().when(bookService).deleteBook(book.getId());
         mockMvc.perform(get(String.format("/book/%s/delete", book.getId())))

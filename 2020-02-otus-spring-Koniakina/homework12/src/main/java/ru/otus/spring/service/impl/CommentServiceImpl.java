@@ -4,11 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.dao.repositories.CommentRepository;
-import ru.otus.spring.exception.EntityCreateException;
 import ru.otus.spring.exception.EntityDeleteException;
-import ru.otus.spring.model.Book;
 import ru.otus.spring.model.Comment;
-import ru.otus.spring.service.BookService;
 import ru.otus.spring.service.CommentService;
 
 import java.util.List;

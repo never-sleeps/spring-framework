@@ -2,18 +2,26 @@ package ru.otus.spring.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import ru.otus.spring.security.filter.AnonymousUserDetails;
 
+/**
+ *
+ *    Роли           Главная страница     Изменение и           Удаление
+ *                   со списком книг      добавление книг        книг
+ *   ANONYMOUS         +                       -                  -
+ *   USER              +                       +                  -
+ *   ADMIN             +                       +                  +
+ *
+ *  Пользователь    user    admin
+ *  Пароль          user    admin
+ */
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -23,7 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/**/public/**", "/webjars/**", "/favicon.ico");
+                .antMatchers("/**/img/**", "/webjars/**", "/favicon.ico");
     }
 
     @Override
