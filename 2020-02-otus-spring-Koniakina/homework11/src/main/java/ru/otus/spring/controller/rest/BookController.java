@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.spring.dao.repositories.AuthorRepository;
 import ru.otus.spring.dao.repositories.BookRepository;
@@ -31,10 +32,10 @@ public class BookController {
     private final CommentRepository commentRepository;
 
     @GetMapping("/api/book")
-    public Mono<List<BookDto>> getAll() {
+    public Flux<BookDto> getAll() {
         log.info("Получение списка книг");
-        return bookRepository.findAll().collectList()
-                .map(this::convertListToMono);
+        return bookRepository.findAll()
+                .map(BookDto::of);
     }
 
     @GetMapping("/api/book/{id}")
@@ -105,12 +106,5 @@ public class BookController {
             return commentRepository.insert(comment).block();
         }
         return null;
-    }
-
-    private List<BookDto> convertListToMono(List<Book> list) {
-        return list
-                .stream()
-                .map(BookDto::of)
-                .collect(Collectors.toList());
     }
 }
