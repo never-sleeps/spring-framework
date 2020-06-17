@@ -17,10 +17,6 @@ import ru.otus.spring.model.Comment;
 import ru.otus.spring.model.Genre;
 import ru.otus.spring.model.dto.BookDto;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -49,23 +45,16 @@ public class BookController {
     @PostMapping("/api/book")
     public Mono<BookDto> create(@RequestBody Book book) {
         log.info("Сохранение книги: " + book.toString());
-        book.setAuthor(getRegistredAuthor(book));
-        book.setGenre(getRegistredGenre(book));
-        book.setComment(getRegistredComment(book));
-        return bookRepository.insert(book)
+        return getObjectMono(book).flatMap(b -> bookRepository.insert(book))
                 .map(BookDto::of);
     }
 
     @PutMapping("/api/book")
     public Mono<BookDto> updateBook(@RequestBody Book book) {
         log.info("Сохранение книги с id: " + book.getId());
-        if (bookRepository.findById(book.getId()).blockOptional().isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Книга " + book.getId() + " не найдена");
-        }
-        book.setAuthor(getRegistredAuthor(book));
-        book.setGenre(getRegistredGenre(book));
-        book.setComment(getRegistredComment(book));
-        return bookRepository.save(book)
+        bookRepository.findById(book.getId()).switchIfEmpty(Mono.error(
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Книга " + book.getId() + " не найдена")));
+        return getObjectMono(book).flatMap(b -> bookRepository.save(book))
                 .map(BookDto::of);
     }
 
@@ -79,32 +68,40 @@ public class BookController {
     }
 
 
-    private Genre getRegistredGenre(Book bookInput) {
-        String genreTitle = bookInput.getGenre().getTitle();
-        Optional<Genre> optionalGenre = genreRepository.findByTitle(genreTitle).blockOptional();
-        if(optionalGenre.isPresent()){
-            return optionalGenre.get();
-        }else {
-            Genre genre = Genre.builder().title(genreTitle).build();
-            return genreRepository.insert(genre).block();
-        }
+    private Mono<Object> getObjectMono(Book book) {
+        return Mono.zip(
+                getRegistredAuthor(book),
+                getRegistredGenre(book),
+                getRegistredComment(book)
+        ).map(objects -> {
+            book.setAuthor(objects.getT1());
+            book.setGenre(objects.getT2());
+            book.setComment(objects.getT3());
+            return book;
+        });
     }
 
-    private Author getRegistredAuthor(Book bookInput) {
-        String authorName = bookInput.getAuthor().getFullName();
-        Optional<Author> optionalAuthor = authorRepository.findByFullName(authorName).blockOptional();
-        if(optionalAuthor.isPresent()){
-            return optionalAuthor.get();
-        }else {
-            Author author = Author.builder().fullName(authorName).build();
-            return authorRepository.insert(author).block();
-        }
+    private Mono<Genre> getRegistredGenre(Book bookInput) {
+        String genreTitle = bookInput.getGenre().getTitle();
+        return genreRepository.findByTitle(genreTitle)
+                .switchIfEmpty(
+                        genreRepository.insert(Genre.builder().title(genreTitle).build())
+                );
     }
-    private Comment getRegistredComment(Book bookInput){
+
+    private Mono<Author> getRegistredAuthor(Book bookInput) {
+        String fullName = bookInput.getAuthor().getFullName();
+        return authorRepository.findByFullName(fullName)
+                .switchIfEmpty(
+                        authorRepository.insert(Author.builder().fullName(fullName).build())
+                );
+    }
+
+    private Mono<Comment> getRegistredComment(Book bookInput){
         if(bookInput.getComment() != null && bookInput.getComment().getText().length() > 0){
             Comment comment = Comment.builder().text(bookInput.getComment().getText()).build();
-            return commentRepository.insert(comment).block();
+            return commentRepository.insert(comment);
         }
-        return null;
+        return Mono.empty();
     }
 }
