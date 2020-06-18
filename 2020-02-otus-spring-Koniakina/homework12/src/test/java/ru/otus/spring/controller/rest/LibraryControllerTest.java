@@ -104,14 +104,25 @@ class LibraryControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @DisplayName(" должен удалять книгу по id")
+    @DisplayName(" должен удалять книгу по id для роли ADMIN")
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    void shouldCheckDeleteBook() throws Exception {
+    void shouldCheckDeleteBookForAdminRole() throws Exception {
         doNothing().when(bookService).deleteBook(book.getId());
         mockMvc.perform(get(String.format("/book/%s/delete", book.getId())))
                 .andDo(print())
                 .andExpect(redirectedUrl("/book"))
                 .andExpect(status().is3xxRedirection());
+    }
+
+    @DisplayName(" при удалении должен переходить на страницу 'Доступ запрещен' для роли USER")
+    @Test
+    @WithMockUser(username = "user", roles = {"USER"})
+    void shouldCheckDeleteBookForUserRole() throws Exception {
+        doNothing().when(bookService).deleteBook(book.getId());
+        mockMvc.perform(get(String.format("/book/%s/delete", book.getId())))
+                .andDo(print())
+                .andExpect(forwardedUrl("/access-denied"))
+                .andExpect(status().is(403));
     }
 }
