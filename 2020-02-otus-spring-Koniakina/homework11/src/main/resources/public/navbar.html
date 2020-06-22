@@ -1,0 +1,19 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="pos-f-t" th:fragment="navbar">
+    <div class="navbar navbar-dark bg-dark" id="navbar" style="height:45px; margin-bottom: 15px;">
+        <div style="position: absolute; right: 30px;" hidden>
+            <a href="?lang=ru" class="badge">
+                <span>
+                    <img th:src="@{/img/ru.png}" title="#{localized.lang.ru}"/>
+                </span>
+            </a>
+            <a href="?lang=en" class="badge">
+                <span>
+                    <img th:src="@{/img/uk.png}" title="#{localized.lang.en}"/>
+                </span>
+            </a>
+        </div>
+        <span id="editText" hidden th:text="#{localized.edit}"/>
+        <span id="deleteText" hidden th:text="#{localized.delete}"/>
+    </div>
+</div>
