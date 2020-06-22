@@ -14,3 +14,10 @@
 10. **[Современные приложения на Spring MVC, AJAX и REST-контроллеры](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework10)**
 11. **[Spring WebFlux](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework11)**
 12. **[Spring Security: Механизмы аутентификации](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework12)**
+13. Spring Security: ACL 
+14. Spring Batch 
+15. Spring Integration
+16. 
+17.
+18.
+
