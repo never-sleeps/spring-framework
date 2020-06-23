@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring библиотека</title>
+    <!-- Bootstrap CSS -->
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="/webjars/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-light">
+<div th:insert="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+
+    <form action="edit.html" class="col-md-4" id="edit-form"
+          th:action="@{/book/{bookId}/update(bookId=${book.id})}"
+          th:method="post"
+          th:object="${book}">
+
+        <h3 th:text="#{localized.bookInformation}"></h3>
+
+        <div class="form-group">
+            <label for="id-input"
+                   th:text="#{localized.bookId}"></label>
+            <input class="form-control" id="id-input" readonly type="text"
+                   th:field="*{id}"
+                   th:value="*{id}"/>
+        </div>
+
+        <div class="form-group">
+            <label for="title-input" th:text="#{localized.bookTitle}"></label>
+            <input class="form-control" id="title-input" readonly type="text"
+                   th:field="*{title}"
+                   th:value="*{title}"/>
+        </div>
+
+        <div class="form-group">
+            <label for="author-input" th:text="#{localized.author}"></label>
+            <input class="form-control" id="author-input" readonly type="text"
+                   th:field="*{author.fullName}"
+                   th:value="*{author.fullName}"/>
+        </div>
+
+        <div class="form-group">
+            <label for="genre-input" th:text="#{localized.genre}"></label>
+            <input class="form-control" id="genre-input" readonly type="text"
+                   th:field="*{genre.title}"
+                   th:value="*{genre.title}"/>
+        </div>
+
+        <div class="form-group" th:if="*{comment != null}">
+            <label for="comment-input" th:text="#{localized.comment}"></label>
+            <input class="form-control" id="comment-input" readonly type="text"
+                   th:field="*{comment.text}"
+                   th:value="*{comment.text}"/>
+        </div>
+
+
+        <div class="form-group">
+            <a class="btn btn-primary" type="button"
+               th:href="@{/book}"
+               th:text="#{localized.back}"></a>
+            <a class="btn btn-secondary" type="button"
+               th:href="@{/book/{bookId}/edit(bookId=${book.id})}"
+               th:text="#{localized.edit}"></a>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>

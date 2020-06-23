@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring библиотека</title>
+    <!-- Bootstrap CSS -->
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="/webjars/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-light">
+<div th:insert="~{fragments/navbar :: navbar}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1 class="text-danger">403</h1>
+                <h4 class="text-danger">Доступ запрещён!</h4>
+                <div class="error-actions">
+                    <a class="btn btn-primary"
+                       th:href="@{/book}"
+                       type="button">Back to home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
