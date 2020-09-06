@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.data.datasource.schema",
+      "type": "java.lang.String",
+      "description": "Description for spring.data.datasource.schema."
+    },
+    {
+      "name": "spring.data.jpa.generate-ddl",
+      "type": "java.lang.String",
+      "description": "Description for spring.data.jpa.generate-ddl."
+    }
+  ] }

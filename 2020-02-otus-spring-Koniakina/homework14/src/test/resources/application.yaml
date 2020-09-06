@@ -1,0 +1,29 @@
+spring:
+  data:
+    mongodb:
+      database: library
+      port: 27017
+      host: localhost
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    initialization-mode: always
+    schema: schema.sql
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      show-sql: false
+
+  main:
+    log-startup-info: false
+    banner-mode: off
+
+  shell:
+    interactive:
+      enabled: false
+
+logging:
+  level:
+    ROOT: ERROR
