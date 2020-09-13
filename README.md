@@ -15,7 +15,7 @@
 11. **[Spring WebFlux](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework11)**
 12. **[Spring Security: Механизмы аутентификации](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework12)**
 13. **[Spring Security: ACL](https://github.com/k-irina-alexandrovna/OTUS/tree/master/2020-02-otus-spring-Koniakina/homework13)**
-14. Spring Batch 
+14. **[Spring Batch] (https://github.com/k-irina-alexandrovna/otus-spring/tree/master/2020-02-otus-spring-Koniakina/homework14)**
 15. Spring Integration
 16. 
 17.
