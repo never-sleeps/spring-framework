@@ -1,7 +1,0 @@
-${Ansi.BLACK}  _                                                            _       ${Ansi.BRIGHT_YELLOW}  ____
-${Ansi.BLACK} | |                                                          | |    ${Ansi.BRIGHT_YELLOW}  |___ \
-${Ansi.BLACK} | |__     ___    _ __ ___     ___  __      __   ___    _ __  | | __  ${Ansi.BRIGHT_YELLOW}   __) |
-${Ansi.BLUE} | '_ \   / _ \  | '_ ` _ \   / _ \ \ \ /\ / /  / _ \  | '__| | |/ /  ${Ansi.BRIGHT_YELLOW}  |__ <
-${Ansi.BRIGHT_RED} | | | | | (_) | | | | | | | |  __/  \ V  V /  | (_) | | |    |   <  ${Ansi.BRIGHT_YELLOW}   ___) |
-${Ansi.BRIGHT_RED} |_| |_|  \___/  |_| |_| |_|  \___|   \_/\_/    \___/  |_|    |_|\_\ ${Ansi.BRIGHT_YELLOW}  |____/
-${Ansi.WHITE}

@@ -1,4 +1,4 @@
-## Spring Framework (Otus)
+## Spring Framework
 
 #### Irina Koniakina
 
