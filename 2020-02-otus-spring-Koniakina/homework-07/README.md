@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: Белая магия Spring Data: Spring Data JPA
 #### Домашнее задание №7:
 **Переписать приложение для хранения книг на Spring Data JPA**

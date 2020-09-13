@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: Spring Data для подключения к нереляционным БД
 #### Домашнее задание №8:
 **Использовать MongoDB и spring-data для хранения информации о книгах**

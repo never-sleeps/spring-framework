@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: Современные приложения на Spring MVC, AJAX и REST-контроллеры
 #### Домашнее задание №10:
 **Приложение с использованием AJAX и REST-контроллеров**

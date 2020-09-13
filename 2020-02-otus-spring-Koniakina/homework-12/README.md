@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: Spring MVC View 
 #### Домашнее задание №9:
 **CRUD приложение с Web UI и хранением данных в БД**

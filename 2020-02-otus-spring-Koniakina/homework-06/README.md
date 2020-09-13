@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: JPQL, Spring ORM, DAO на основе Spring ORM + JPA
 #### Домашнее задание №6:
 **Переписать приложение для хранения книг на ORM**

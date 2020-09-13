@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: DAO на Spring JDBC
 #### Домашнее задание №5:
 **Создать приложение хранящее информацию о книгах в

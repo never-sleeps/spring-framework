@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: Spring Batch
 #### Домашнее задание №14:
 **На основе Spring Batch разработать процедуру миграции данных из реляционного хранилища в NoSQL или наоборот**

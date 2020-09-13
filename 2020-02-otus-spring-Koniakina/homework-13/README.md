@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: Spring Security: ACL 
 #### Домашнее задание №13:
 **Ввести авторизацию на основе URL и/или доменных сущностей**

@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: WebFlux
 #### Домашнее задание №11:
 **Приложение на reactive stack**

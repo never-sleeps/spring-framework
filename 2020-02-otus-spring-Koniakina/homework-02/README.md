@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: Конфигурирование Spring приложений
 #### Домашнее задание №2:
 **Добавить файл настроек, Annotation- + Java-based конфигурация приложения**

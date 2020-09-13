@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: Чёрная магия Spring Boot
 #### Домашнее задание №3:
 **Перенести приложение для тестирования студентов на Spring Boot**

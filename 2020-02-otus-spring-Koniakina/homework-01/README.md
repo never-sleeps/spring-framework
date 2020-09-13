@@ -1,4 +1,4 @@
-## Otus (Spring Framework)
+## Spring Framework
 ### Тема: Введение в Spring Framework
 #### Домашнее задание №1:
 **Программа по проведению тестирования студентов**
