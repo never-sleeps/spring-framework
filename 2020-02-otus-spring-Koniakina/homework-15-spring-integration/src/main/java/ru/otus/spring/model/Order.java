@@ -13,6 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class Order {
 
+    private Long id;
     private Customer customer;
     private Map<OrderItem, Integer> items = new HashMap<>();
 }

@@ -7,24 +7,32 @@ import ru.otus.spring.model.Order;
 import ru.otus.spring.model.OrderItem;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Util {
+
+    private final static AtomicLong ID = new AtomicLong(1);
+
     private final static List<OrderItem> ORDER_ITEMS = ImmutableList.of(
-            new OrderItem("Тетрадь", BigDecimal.valueOf(50.00)),
-            new OrderItem("Учебник", BigDecimal.valueOf(700.00)),
-            new OrderItem("Пенал", BigDecimal.valueOf(200.00)),
-            new OrderItem("Ручка", BigDecimal.valueOf(50.00)),
-            new OrderItem("Карандаш", BigDecimal.valueOf(40.00)),
-            new OrderItem("Линейка", BigDecimal.valueOf(50.00)),
-            new OrderItem("Обложка", BigDecimal.valueOf(5.50)),
-            new OrderItem("Точилка", BigDecimal.valueOf(25.00)),
-            new OrderItem("Ластик", BigDecimal.valueOf(10.70)),
-            new OrderItem("Альбом", BigDecimal.valueOf(220.00))
+            new OrderItem("Тетрадь", getRandomPrice()),
+            new OrderItem("Учебник", getRandomPrice()),
+            new OrderItem("Пенал", getRandomPrice()),
+            new OrderItem("Ручка", getRandomPrice()),
+            new OrderItem("Карандаш", getRandomPrice()),
+            new OrderItem("Линейка", getRandomPrice()),
+            new OrderItem("Обложка", getRandomPrice()),
+            new OrderItem("Точилка", getRandomPrice()),
+            new OrderItem("Ластик", getRandomPrice()),
+            new OrderItem("Альбом", getRandomPrice())
     );
+
+    private static BigDecimal getRandomPrice(){
+        return BigDecimal.valueOf(RandomUtils.nextDouble(0.50, 500)).setScale(2, RoundingMode.CEILING);
+    }
 
     private final static List<Customer> CUSTOMERS = ImmutableList.of(
             new Customer("Иванов Александр","ivan@mail.ru","г.Москва, ул.Садовая 5"),
@@ -41,9 +49,13 @@ public class Util {
     public static Order getRandomOrderForGeneration(){
         Customer customer = getRandomItem(CUSTOMERS);
         Map<OrderItem, Integer> orderItems = new HashMap<>();
-        for (int i = 0; i < RandomUtils.nextInt(0, 5); i++) {
-            orderItems.put(getRandomItem(ORDER_ITEMS), RandomUtils.nextInt(0, 3));
+        for (int i = 0; i < RandomUtils.nextInt(1, 5); i++) {
+            orderItems.put(getRandomItem(ORDER_ITEMS), RandomUtils.nextInt(1, 5));
         }
-        return new Order(customer, orderItems);
+        return Order.builder()
+                .id(ID.getAndIncrement())
+                .customer(customer)
+                .items(orderItems)
+                .build();
     }
 }

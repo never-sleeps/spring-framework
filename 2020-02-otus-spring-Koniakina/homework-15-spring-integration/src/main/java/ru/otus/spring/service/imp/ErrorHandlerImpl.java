@@ -6,21 +6,22 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.model.Order;
 import ru.otus.spring.model.Parcel;
 import ru.otus.spring.service.ErrorHandler;
-import ru.otus.spring.service.PostService;
+import ru.otus.spring.service.NotificationService;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ErrorHandlerImpl implements ErrorHandler {
 
-    private final PostService postService;
+    private final NotificationService notificationService;
 
     @Override
     public void handleMessage(ErrorMessage errorMessage) {
         Throwable t = errorMessage.getPayload();
-        log.error(t.getLocalizedMessage());
+        log.error(t.getMessage());
 
         if (t instanceof MessagingException) {
             Message<?> message = ((MessagingException) t).getFailedMessage();
@@ -31,7 +32,9 @@ public class ErrorHandlerImpl implements ErrorHandler {
 
     private void sendNotificationError(Object obj) {
         if (obj instanceof Parcel) {
-            postService.sendNotificationError((Parcel) obj);
+            notificationService.sendNotificationError((Parcel) obj);
+        } else if (obj instanceof Order) {
+            notificationService.sendNotificationError((Order) obj);
         }
     }
 }

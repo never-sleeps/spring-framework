@@ -2,47 +2,50 @@ package ru.otus.spring.integration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.task.TaskExecutorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.aggregator.TimeoutCountSequenceSizeReleaseStrategy;
 import org.springframework.integration.annotation.IntegrationComponentScan;
-import org.springframework.integration.channel.PublishSubscribeChannel;
 import org.springframework.integration.channel.QueueChannel;
+import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import ru.otus.spring.model.Notification;
 import ru.otus.spring.model.Parcel;
-import ru.otus.spring.model.enums.DeliveryStatus;
 import ru.otus.spring.model.enums.DeliveryType;
 import ru.otus.spring.service.DeliveryService;
 import ru.otus.spring.service.ErrorHandler;
+import ru.otus.spring.service.NotificationService;
 import ru.otus.spring.service.PostService;
 
-import java.util.concurrent.Executor;
-
 @Configuration
+@EnableIntegration
 @IntegrationComponentScan
 @RequiredArgsConstructor
 public class IntegrationConfig {
 
-    private static final int DEFAULT_POOL_SIZE = 5;
-    private static final int EVENT_MAX_POOL_SIZE = 10;
-    private static final int DELIVERY_MAX_POOL_SIZE = 10;
-
     private final PostService postService;
     private final DeliveryService deliveryService;
+    private final NotificationService notificationService;
     private final ErrorHandler errorHandler;
 
-    public static final String DELIVERY_STATUS = "delivery_status";
+    public static final String ORDERS_CHANNEL = "ordersChannel";
+    public static final String NOTIFICATION_CHANNEL = "notificationChannel";
+    public static final String POST_CHANNEL = "postChannel";
+    public static final String DELIVERY_CHANNEL = "deliveryChannel";
+    public static final String LAND_CHANNEL = "landChannel";
+    public static final String AIR_CHANNEL = "airChannel";
+
+
+    @Bean(name = PollerMetadata.DEFAULT_POLLER)
+    public PollerMetadata poller() {
+        return Pollers.fixedRate(100).get();
+    }
 
     @Bean
     public QueueChannel ordersChannel() {
@@ -50,8 +53,8 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public PublishSubscribeChannel parcelsChannel() {
-        return MessageChannels.publishSubscribe().get();
+    public MessageChannel notificationChannel() {
+        return MessageChannels.queue(50).get();
     }
 
     @Bean
@@ -61,53 +64,19 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public MessageChannel notificationChannel() {
-        return MessageChannels.executor(notificationExecutor()).get();
-    }
+    public PollableChannel postChannel() { return MessageChannels.queue(10).get(); }
 
     @Bean
-    public Executor notificationExecutor() {
-        return newThreadPoolTask("notification", DEFAULT_POOL_SIZE, EVENT_MAX_POOL_SIZE);
-    }
-
-    @Bean
-    public PollableChannel postChannel() {
-        return MessageChannels.queue(10).get();
-    }
-
-    @Bean
-    public MessageChannel deliveryChannel() {
-        return MessageChannels.executor(deliveryExecutor()).get();
-    }
-
-    @Bean
-    public Executor deliveryExecutor() {
-        return newThreadPoolTask("delivery", DEFAULT_POOL_SIZE, DELIVERY_MAX_POOL_SIZE);
-    }
+    public MessageChannel deliveryChannel() { return MessageChannels.queue(50).get();}
 
     @Bean
     public MessageChannel landChannel() {
-        return MessageChannels.queue(10).get();
-    }
-
-    @Bean
-    public ThreadPoolTaskExecutor landExecutor() {
-        return newThreadPoolTask("land", DEFAULT_POOL_SIZE, 10);
+        return MessageChannels.queue(50).get();
     }
 
     @Bean
     public MessageChannel airChannel() {
-        return MessageChannels.queue(10).get();
-    }
-
-    @Bean
-    public ThreadPoolTaskExecutor airExecutor() {
-        return newThreadPoolTask("air", DEFAULT_POOL_SIZE, 10);
-    }
-
-    @Bean(name = PollerMetadata.DEFAULT_POLLER)
-    public PollerMetadata poller() {
-        return Pollers.fixedRate(100).get();
+        return MessageChannels.queue(50).get();
     }
 
     @Bean
@@ -119,88 +88,57 @@ public class IntegrationConfig {
 
     @Bean
     public IntegrationFlow notificationFlow() {
-        return IntegrationFlows.from("notificationChannel")
-                .<Notification>log(
-                        "notification>",
-                        notificationMessage -> Notification.NOTIFICATION_STRING_FUNCTION.apply(notificationMessage.getPayload())
-                )
+        return IntegrationFlows.from(NOTIFICATION_CHANNEL)
+                .<Notification>log("notification >", m -> Notification.NOTIFICATION_STRING_FUNCTION.apply(m.getPayload()))
                 .get();
     }
 
     @Bean
     public IntegrationFlow ordersFlow() {
-        return IntegrationFlows.from("ordersChannel")
-                .log("order>")
-                // Группируем все заказы, сделанные в течение часа (но не более 10)
-                .aggregate(a -> a
-                        .sendPartialResultOnExpiry(true)
-                        .releaseStrategy(new TimeoutCountSequenceSizeReleaseStrategy(10, 60*60*1000))
-                )
-                // Привозим собранные заказы на почту
-                .channel(postChannel())
+        return IntegrationFlows.from(ORDERS_CHANNEL)
+                .log("create order >")
+                .handle(notificationService, "sendNotificationAboutOrderRegistered")
+                .channel(POST_CHANNEL)
                 .get();
     }
 
     @Bean
     public IntegrationFlow postFlow() {
-        return IntegrationFlows.from("postChannel")
-                .log("post>")
-                // Упаковываем посылку, присваиваем trackNumber
+        return IntegrationFlows.from(POST_CHANNEL)
+                .log("post office >")
                 .transform(postService, "transformToParcel")
-                // Уведомляем клиента о присвоенном трек-номере
-                .handle(postService, "sendNotificationAboutPackingOfParcel")
-                // Отправляем посылку
-                .channel(parcelsChannel())
+                .handle(notificationService, "sendNotificationAboutPackingOfParcel")
+                .channel(DELIVERY_CHANNEL)
                 .get();
     }
 
     @Bean
     public IntegrationFlow deliveryFlow() {
-        return IntegrationFlows.from("deliveryChannel")
-                .log("delivery>")
-                // Выбираем вид транспорта, которым будет доставлена посылка
+        return IntegrationFlows.from(DELIVERY_CHANNEL)
+                .log("start delivery >")
                 .handle(deliveryService, "setDeliveryType")
-                // Уведомляем клиента о начале транспортировки
-                .handle(postService, "sendNotificationOfTransportationStart")
-                // В зависимости от вида транспортировки направляем в соответствующий канал
+                .handle(notificationService, "sendNotificationOfTransportationStart")
                 .<Parcel, DeliveryType>route(Parcel::getDeliveryType,
                         router -> router
-                                .channelMapping(DeliveryType.LAND, landChannel())
-                                .channelMapping(DeliveryType.AIR, airChannel())
+                                .channelMapping(DeliveryType.LAND, LAND_CHANNEL)
+                                .channelMapping(DeliveryType.AIR, AIR_CHANNEL)
                 )
                 .get();
     }
 
     @Bean
     public IntegrationFlow landFlow() {
-        return IntegrationFlows.from("landChannel")
-                .channel(MessageChannels.executor(landExecutor()))
-                // Обновляем статус заказа
-                .enrichHeaders(headers -> headers.header(DELIVERY_STATUS, DeliveryStatus.DELIVERED))
-                // Уведомляем клиента об успешной доставке
-                .handle(postService, "sendNotificationOfSuccessfulDelivery")
-                .channel(parcelsChannel())
+        return IntegrationFlows.from(LAND_CHANNEL)
+                .log("delivery by land >")
+                .handle(notificationService, "sendNotificationOfSuccessfulDelivery")
                 .get();
     }
 
     @Bean
     public IntegrationFlow airFlow() {
-        return IntegrationFlows.from("airChannel")
-                .channel(MessageChannels.executor(airExecutor()))
-                // Обновляем статус заказа
-                .enrichHeaders(headers -> headers.header(DELIVERY_STATUS, DeliveryStatus.DELIVERED))
-                // Уведомляем клиента об успешной доставке
-                .handle(postService, "sendNotificationOfSuccessfulDelivery")
-                .channel(parcelsChannel())
+        return IntegrationFlows.from(AIR_CHANNEL)
+                .log("delivery by air >")
+                .handle(notificationService, "sendNotificationOfSuccessfulDelivery")
                 .get();
-    }
-
-    private static ThreadPoolTaskExecutor newThreadPoolTask(String prefix, int coreSize, int maxPoolSize) {
-        return new TaskExecutorBuilder()
-                .corePoolSize(coreSize)
-                .maxPoolSize(maxPoolSize)
-                .threadNamePrefix(prefix + "-")
-                .awaitTermination(true)
-                .build();
     }
 }
