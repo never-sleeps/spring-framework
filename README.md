@@ -19,5 +19,5 @@
 15. Spring Integration
 16. Spring Boot Actuator, HATEOAS подход, Spring Data REST
 17. Docker
-18.
+18. Hystrix
 
