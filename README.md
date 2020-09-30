@@ -1,6 +1,6 @@
 ## Spring Framework
 
-#### Irina Koniakina
+#### Irina Konyakina
 
 1. **[Введение в Spring Framework](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-01)** 
 2. **[Конфигурирование Spring приложений](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-02)**
