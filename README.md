@@ -17,7 +17,7 @@
 13. **[Spring Security: ACL](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-13)**
 14. **[Spring Batch](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-14)**
 15. **[Spring Integration](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-15-spring-integration)**
-16. Spring Boot Actuator, HATEOAS подход, Spring Data REST
+16. **[Spring Boot Actuator, HATEOAS подход, Spring Data REST](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-16-actuator)**
 17. Docker
 18. Hystrix
 
