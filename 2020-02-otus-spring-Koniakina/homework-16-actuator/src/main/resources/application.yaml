@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    initialization-mode: always
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+
+  data:
+    rest:
+      base-path: /rest/api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health, metrics, logfile"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  pattern:
+    rolling-file-name: "${LOG_FILE}.%d{yyyy-MM-dd_HH-mm}.%i.gz"
+  file:
+    name: "logs/application.log"
+    max-size: 1024B
+    max-history: 5
