@@ -1,0 +1,29 @@
+version: '3.1'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    privileged: true
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    depends_on:
+      - databasemongo
+    environment:
+      - DB_NAME=library
+      - DB_HOST=localhost
+      - DB_PORT=27017
+      - WAIT_FOR=mongo:27017
+    networks:
+      - nw
+  databasemongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      - nw
+networks:
+  nw:
