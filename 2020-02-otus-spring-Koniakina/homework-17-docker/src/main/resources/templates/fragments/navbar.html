@@ -1,0 +1,20 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="pos-f-t" th:fragment="navbar">
+    <div class="navbar navbar-dark bg-dark" style="height:45px; margin-bottom: 15px;">
+        <div style="position: absolute; right: 30px;">
+            <a href="?lang=ru" class="badge">
+                <span>
+                    <img th:src="@{/img/ru.png}" th:title="#{localized.lang.ru}"/>
+                </span>
+            </a>
+            <a href="?lang=en" class="badge">
+                <span>
+                    <img th:src="@{/img/uk.png}"  th:title="#{localized.lang.en}"/>
+                </span>
+            </a>
+            <a type="button" th:href="@{/login}" class="btn btn-primary">login</a>
+            <a type="button" th:href="@{/logout}" class="btn btn-primary">logout</a>
+        </div>
+    </div>
+
+</div>
