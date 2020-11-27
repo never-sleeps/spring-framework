@@ -31,6 +31,7 @@ public class LibraryController {
     public String getBooks(Model model) {
         log.info("Получение списка книг");
         List<Book> books = bookService.findAllBooks();
+        log.info("Получено книг: " + books.size());
         model.addAttribute("books", books);
         return "index";
     }

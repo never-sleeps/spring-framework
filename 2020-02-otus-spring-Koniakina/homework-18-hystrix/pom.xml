@@ -25,6 +25,8 @@
         <bootstrap.version>4.1.1</bootstrap.version>
         <ehcache.core.version>2.6.11</ehcache.core.version>
         <swagger.version>2.9.2</swagger.version>
+        <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
+        <netflix.hystrix.version>2.2.2.RELEASE</netflix.hystrix.version>
     </properties>
 
     <dependencies>
@@ -121,8 +123,37 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <version>${netflix.hystrix.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+            <version>${netflix.hystrix.version}</version>
+        </dependency>
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

@@ -7,3 +7,11 @@ spring:
 logging:
   level:
     ROOT: INFO
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000

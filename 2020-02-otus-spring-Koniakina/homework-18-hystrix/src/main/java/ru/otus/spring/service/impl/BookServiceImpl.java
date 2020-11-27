@@ -1,5 +1,6 @@
 package ru.otus.spring.service.impl;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,9 @@ import ru.otus.spring.service.AuthorService;
 import ru.otus.spring.service.BookService;
 import ru.otus.spring.service.CommentService;
 import ru.otus.spring.service.GenreService;
+import ru.otus.spring.util.Util;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,7 +96,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @HystrixCommand(commandKey = "findById", fallbackMethod = "fallbackGetBookById")
     public Optional<Book> findBookById(String id) {
+        Util.sleepRandomly();
         return bookRepository.findById(id);
     }
 
@@ -115,10 +120,25 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @HystrixCommand(commandKey = "findAll", fallbackMethod = "fallbackGetAllBooks")
     public List<Book> findAllBooks() {
+        Util.sleepRandomly();
         return bookRepository.findAll();
     }
 
+    private List<Book> fallbackGetAllBooks() {
+        return Collections.emptyList();
+    }
+
+    private Optional<Book> fallbackGetBookById(String id) {
+        Book book = Book.builder()
+                .id(id)
+                .title("N/A")
+                .author(Author.builder().fullName("N/A").build())
+                .genre(Genre.builder().title("N/A").build())
+                .build();
+        return Optional.of(book);
+    }
 
     private Author getRegistredAuthor(String authorName){
         return authorService.getRegisteredAuthor(authorName);
