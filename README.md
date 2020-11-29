@@ -19,5 +19,5 @@
 15. **[Spring Integration](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-15-spring-integration)**
 16. **[Spring Boot Actuator, HATEOAS подход, Spring Data REST](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-16-actuator)**
 17. **[Docker](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-17-docker)**
-18. Hystrix
+18. **[Hystrix](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-18-hystrix)**
 
