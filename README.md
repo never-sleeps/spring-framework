@@ -21,3 +21,5 @@
 17. **[Docker](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-17-docker)**
 18. **[Hystrix](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-18-hystrix)**
 
+
+**[Сертификат](https://otus.ru/certificate/41fc58ed664843b6930b7118f8c5153e/)**
