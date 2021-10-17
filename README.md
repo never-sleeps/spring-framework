@@ -1,5 +1,6 @@
 ## **[Spring Framework](https://otus.ru/lessons/javaspring/)** 
 
+![](https://img.shields.io/github/languages/top/never-sleeps/spring-framework)
 #### Irina Konyakina (iakonyakina@gmail.com)
 
 1. **[Введение в Spring Framework](https://github.com/never-sleeps/spring-framework/tree/master/2020-02-otus-spring-Koniakina/homework-01)** 
