@@ -22,7 +22,7 @@
         <spring-shell.version>2.0.1.RELEASE</spring-shell.version>
         <aspectjweaver.version>1.9.4</aspectjweaver.version>
         <lombok.version>1.18.12</lombok.version>
-        <h2.version>1.4.200</h2.version>
+        <h2.version>2.0.206</h2.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <starter-message-source.version>1.0.0</starter-message-source.version>
